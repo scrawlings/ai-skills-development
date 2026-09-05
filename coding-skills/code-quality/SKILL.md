@@ -25,6 +25,14 @@ A **seam** is the small set of entry points into a unit:
 
 "Call a unit" means "call a function at its seam".
 
+A seam that feels wrong on inspection is not always a quality problem to fix
+by restructuring. Sometimes the seam is well-drawn for reasons that no longer
+hold — the code around it changed, or the world it was modelling moved on.
+Restructuring a seam without asking why it was shaped this way risks losing
+information the shape was quietly encoding. When a seam feels awkward and
+nothing in the current change explains why, treat that as a candidate for
+code-legacy's drift-noticing practice before reaching for a structural fix.
+
 ## Structures that keep change local
 
 - **Locality.** Code that belongs together changes together. Watch for: the same few files changing for many loosely-related reasons; small changes touching many, superficially unrelated files.

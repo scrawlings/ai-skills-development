@@ -38,7 +38,30 @@ deleted.
   clear name is easier to talk about and to code.
 - The glossary grows over time. Correct accidental synonyms when you see them.
 
-## Personas and journeys
+## Personas and journeys do two jobs, not one
+
+Personas and journeys are usually read as an implementation-ordering tool:
+they organise tickets, prune speculation, and reveal what to build early. That
+job matters, but it is not the only one, and treating it as the only one is
+what makes a ticket's stated value go thin and unfalsifiable.
+
+The second job: a persona, wanting something, in a journey, is the only
+honest answer available to *why write this code at all*. Value is not a
+separate quality to assert in a sentence — it is whatever a real persona's
+real journey requires, and nothing else. A ticket that cannot name which
+persona and which journey it serves has not yet answered why it exists, no
+matter how clearly it describes what it builds.
+
+Both jobs must be visible in how personas and journeys are used:
+
+- **Actionable for building** — ask "what does this persona need, want, or
+  value?", and "do we really serve this persona?" to prune speculation and
+  order tickets.
+- **Traceable for worth** — every ticket's value should point at a specific
+  persona and a specific point in a specific journey, not a general appeal to
+  "the user" or "customer value." A claim that cannot be traced this way
+  cannot later be rechecked, and an unrecheckable value claim is exactly what
+  goes stale silently (see code-legacy).
 
 - **Personas** organise journeys and help prune speculation: ask "what does
   this persona need, want, or value?", and "do we really serve this persona?"
@@ -57,6 +80,37 @@ When there is no clear choice, quiz the user. Offer a few options, highlight
 the one you think best, and group related questions. Often an answer is
 obvious and should simply be accepted.
 
+## Reversibility justifies trying, not scope
+
+A request should default to a literal, straightforward reading: build what
+was explicitly asked, at the size it was asked for. Noticing that something
+would be cheap or reversible to extend is not, by itself, permission to
+extend it — that reasoning answers "would this be safe to try," not "was
+this requested." Treating the first as an answer to the second is how small,
+sensible technical choices quietly turn into unrequested scope: a
+case-insensitive, prefix-matched lookup built for one field, applied to a
+second field nobody asked about, because the mechanism was already there and
+cheap to reuse. Consistency is a real value, but it is not a substitute for
+being asked. There are times when consistency brings simplicity, the collapasing
+of cases in seams, and greater affordance, if those values are met, then there
+is a real decision to be made that could go either way, and needs to be treated
+in context or queried.
+
+There are genuine moments where a looser, more generative reading is the
+right call — where the request itself reads as an invitation to explore
+possibilities, not a specification to implement. Treat that as a real,
+different mode (see code-exploration), not a default lens to apply to
+ordinary tickets. The tell is in the request's own shape: an open question
+("what might this look like") invites exploration; a specific instruction
+("use any unique prefix of the name") does not, however easy it would be to
+generalise.
+
+Either way, keep the feedback loop tight. A playful or generative extension
+is only safe when it is proposed and checked early — named as a question or
+a small, visible option, not built out silently and presented as already
+decided. The size of an unrequested addition matters less than how long it
+went unremarked before the user saw it.
+
 ## Tickets
 
 Tickets define incremental steps of work. Future tickets form a graph — some
@@ -74,6 +128,12 @@ Each ticket records:
 
 - **Status** — one of a small set (see below).
 - **Journeys** — which journeys it is part of.
+- **Value trace** — which persona, and which specific point in which
+  journey, this ticket serves. Name it concretely enough to recheck later by
+  asking a real question ("does this persona still do this journey, still
+  this way") rather than by feeling. Distinct from Problem: Problem states
+  the intention in the ticket's own terms; the value trace points outward, at
+  the persona and journey that make the intention worth having at all.
 - **Problem** — the value, intention, or problem the work solves.
 - **Constraints** — what a successful implementation must satisfy; a powerful
   driver of tests.
@@ -120,6 +180,12 @@ Use this structure; it lets a fresh session orient quickly:
 
 The plan is added to over time. ADRs in particular record choices with wide
 impact, so future work does not have to rediscover them.
+
+When a persona or journey itself is edited, merged, or removed from the plan,
+treat that as a trigger: every ticket whose value trace pointed at it needs
+revisiting (see code-legacy) — this is a more mechanical, checkable event
+than premise drift generally, because the plan itself has visibly changed,
+not just the world around it.
 
 ## Moving to implementation
 

@@ -23,9 +23,19 @@ Review may be **re-review**, after an earlier round led to changes. Re-review no
 
 Cues: "make a review of this code" asks for a review; "can you check it again" signals re-review; "prepare a review" suggests the review will be fed back to the coding agent rather than to a human.
 
+Confidence is not a substitute for any of these stances actually running. A
+capable model skipping self-review because the change looks obviously right
+is the same error as trusting an unverified claim because it sounds
+plausible (see the disciplined-research skill, if present, for the same
+principle applied to citations) — the fix is procedural, not a judgement
+call to be made fresh each time. Self-review runs whether or not it feels
+necessary.
+
 ## What to inspect
 
 - **Purpose.** Did the change solve the root problem within the constraints? Where a fix is warranted, suggest a specific test that locks the problem and constraints in as code.
+- **Value.** Does the change still trace to a live persona and a specific point in a specific journey (see code-planning)? If the plan's personas or journeys have since changed, do not assume the original trace still holds — flag it per code-legacy rather than reviewing against a value claim that may already be stale.
+- **Redundancy.** What does this change make redundant, and has it been removed? Ask this every time, not only when duplication is obvious. Addition is the default bias in both human and AI-assisted work (see code-exploration's "additive drift") — a good change sometimes has a negative line count, and a review that never asks this will never catch the cases where it should.
 - **Interactions.** Code outside the stated scope is treated loosely, but the change's effects on that code are in scope. A significant problem outside the scope is worth raising, though not flagged as seriously for this review.
 - **Good vs bad.** Distinguish well-structured code from badly-structured code (see code-quality: units, seams, locality, affordance). Comments that explain *how to use* something are a smell — the fix is usually a better seam or type, not more comment.
 - **State.** Look for mutation and life-cycles of data; unexpected states often come from changes in one place meeting changes in another.
